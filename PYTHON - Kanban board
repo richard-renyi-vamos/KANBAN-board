@@ -42,3 +42,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     kanban_board = KanbanBoard(root)
     root.mainloop()
+
+
+# CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
