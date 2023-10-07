@@ -1,0 +1,44 @@
+import tkinter as tk
+from tkinter import simpledialog
+
+class KanbanBoard:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Kanban Board")
+
+        self.lists = {}
+        self.create_list_button = tk.Button(root, text="Create List", command=self.create_list)
+        self.create_list_button.pack()
+
+    def create_list(self):
+        list_name = simpledialog.askstring("Input", "Enter list name:")
+        if list_name:
+            list_frame = tk.Frame(self.root)
+            list_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.Y)
+
+            tk.Label(list_frame, text=list_name).pack()
+            card_entry = tk.Entry(list_frame)
+            card_entry.pack()
+            add_card_button = tk.Button(list_frame, text="Add Card", command=lambda list_name=list_name, card_entry=card_entry: self.add_card(list_name, card_entry))
+            add_card_button.pack()
+            cards_frame = tk.Frame(list_frame)
+            cards_frame.pack()
+            self.lists[list_name] = {"entry": card_entry, "cards": cards_frame}
+
+    def add_card(self, list_name, card_entry):
+        card_text = card_entry.get()
+        if card_text:
+            card_label = tk.Label(self.lists[list_name]["cards"], text=card_text, relief=tk.RAISED)
+            card_label.pack(fill=tk.X)
+            card_label.bind("<Button-1>", lambda event, label=card_label: self.rename_card(event, label))
+            card_entry.delete(0, tk.END)
+
+    def rename_card(self, event, card_label):
+        new_text = simpledialog.askstring("Rename Card", "Enter a new name:", initialvalue=card_label.cget("text"))
+        if new_text:
+            card_label.config(text=new_text)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    kanban_board = KanbanBoard(root)
+    root.mainloop()
