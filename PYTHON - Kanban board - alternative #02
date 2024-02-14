@@ -1,0 +1,50 @@
+# Kanban columns: To Do, In Progress, Done
+kanban_board = {
+    "To Do": [],
+    "In Progress": [],
+    "Done": []
+}
+
+def add_task(task):
+    """Add a task to the 'To Do' column."""
+    kanban_board["To Do"].append(task)
+    print(f"Task '{task}' added to 'To Do'.")
+
+def move_task(task, from_column, to_column):
+    """Move a task from one column to another."""
+    if task in kanban_board[from_column]:
+        kanban_board[from_column].remove(task)
+        kanban_board[to_column].append(task)
+        print(f"Task '{task}' moved from '{from_column}' to '{to_column}'.")
+    else:
+        print(f"Task '{task}' not found in '{from_column}'.")
+
+def display_board():
+    """Display the current state of the Kanban board."""
+    for column, tasks in kanban_board.items():
+        print(f"{column}:")
+        for task in tasks:
+            print(f"- {task}")
+        print("")  # Add a newline for better readability
+
+def main():
+    """Main function to run the Kanban tool command loop."""
+    while True:
+        print("\nCommands: add <task>, move <task> <from> <to>, display, quit")
+        command = input("Enter command: ").strip().split()
+        if not command:
+            continue
+
+        if command[0] == "quit":
+            break
+        elif command[0] == "add" and len(command) > 1:
+            add_task(" ".join(command[1:]))
+        elif command[0] == "move" and len(command) > 3:
+            move_task(command[1], command[2], command[3])
+        elif command[0] == "display":
+            display_board()
+        else:
+            print("Invalid command. Please try again.")
+
+if __name__ == "__main__":
+    main()
